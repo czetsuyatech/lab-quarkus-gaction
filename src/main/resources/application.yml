@@ -1,0 +1,8 @@
+quarkus:
+  application:
+    name: lab-quarkus-gaction
+  http:
+    root-path: ${ROOT_PATH:/lab}
+  lambda:
+    mock-event-server:
+      dev-port: 1201

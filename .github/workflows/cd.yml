@@ -1,0 +1,29 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment
+        type: environment
+        required: true
+
+jobs:
+  cd:
+    uses: czetsuyatech/actions/.github/workflows/cd.yml@main
+    with:
+      deployStrategy: awsLambda
+      environment: ${{ github.event.inputs.environment }}
+      functionName: lab-quarkus-gaction
+      javaVersion: '17'
+    secrets:
+      awsRegion: ${{ secrets.AWS_REGION }}
+      githubAppId: ${{ secrets.CT_RELEASE_APP_ID }}
+      githubAppPrivateKey: ${{ secrets.CT_RELEASE_APP_PRIVATE_KEY }}
+      awsAccessKeyIdDev: ${{ secrets.CT_AWS_ACCESS_KEY_ID_DEV }}
+      awsSecretAccessKeyDev: ${{ secrets.CT_AWS_SECRET_ACCESS_KEY_DEV }}
+      githubToken: ${{ secrets.GH_PKG_TOKEN }}
